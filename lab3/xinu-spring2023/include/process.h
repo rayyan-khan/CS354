@@ -52,6 +52,7 @@ struct procent {		/* Entry in the process table		*/
 	umsg32	prmsg;		/* Message sent to this process		*/
 	bool8	prhasmsg;	/* Nonzero iff msg is valid		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
+	uint32	prcpu; 		/* lab 3 3.1 variable */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
@@ -60,3 +61,4 @@ struct procent {		/* Entry in the process table		*/
 extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
+extern volatile uint32 currcpu; /* currcpu variable for lab 3 3.1 */

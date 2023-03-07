@@ -6,6 +6,8 @@
  * clkhandler - high level clock interrupt handler
  *------------------------------------------------------------------------
  */
+volatile uint32 currcpu = 0;
+
 void	clkhandler()
 {
 	static	uint32	count1000 = 1000;	/* Count to 1000 ms	*/

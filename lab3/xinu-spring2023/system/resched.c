@@ -41,7 +41,12 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
 	preempt = QUANTUM;		/* Reset time slice for process	*/
+
+	ptold->prcpu = ptold->prcpu + currcpu; // add for lab 3 3.1, update prcpu
+
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
+
+	currcpu = 0; // add for lab 3 3.1, reset currcpu
 
 	/* Old process returns here when resumed */
 
