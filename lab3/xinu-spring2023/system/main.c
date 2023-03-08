@@ -2,8 +2,13 @@
 
 #include <xinu.h>
 
+void test_3_1(void);
+
 process	main(void)
 {
+
+	/* lab 3 test */
+	test_3_1();
 
 	/* Run the Xinu shell */
 
@@ -20,4 +25,15 @@ process	main(void)
 	}
 	return OK;
     
+}
+
+void test_3_1() {
+	int i = 0;
+	int j = 0;
+
+	for(i = 0; i < 5000000; i++) {
+		j++;
+	}
+
+	kprintf("\n3.1 cpuusage result: %d\n", cpuusage(getpid()));
 }

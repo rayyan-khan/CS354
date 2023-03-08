@@ -49,6 +49,10 @@ pid32	create(
 	prptr->prsem = -1;
 	prptr->prparent = (pid32)getpid();
 	prptr->prhasmsg = FALSE;
+	prptr->prcpu = 0; // added for lab 3 3.1
+	// prptr->prresptime = 0; // added for lab 3 3.2
+	// prptr->prctxswcount = 0; // added for lab 3 3.2
+	// prptr->prbeginready = 0; // added for lab 3 3.2
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 	prptr->prdesc[0] = CONSOLE;

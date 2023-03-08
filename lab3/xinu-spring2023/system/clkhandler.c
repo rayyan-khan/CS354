@@ -19,13 +19,15 @@ void	clkhandler()
 	if((--count1000) <= 0) {
 
 		/* One second has passed, so increment seconds count */
-
 		clktime++;
 
 		/* Reset the local ms counter for the next second */
 
 		count1000 = 1000;
 	}
+
+	currcpu++; // lab 3 3.1
+	// kprintf("currcpu: %d\n", currcpu); // debugging
 
 	/* Handle sleeping processes if any exist */
 

@@ -42,8 +42,10 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptnew->prstate = PR_CURR;
 	preempt = QUANTUM;		/* Reset time slice for process	*/
 
+	
+	// kprintf("before update prcpu: %d currcpu: %d\n", ptold->prcpu, currcpu); // debugging
 	ptold->prcpu = ptold->prcpu + currcpu; // add for lab 3 3.1, update prcpu
-
+	// kprintf("after update prcpu: %d\n", ptold->prcpu); // debugging
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
 	currcpu = 0; // add for lab 3 3.1, reset currcpu
