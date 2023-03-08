@@ -150,8 +150,19 @@ local process	startup(void)
 static	void	sysinit()
 {
 	int32	i;
+	int32   j;
 	struct	procent	*prptr;		/* Ptr to process table entry	*/
 	struct	sentry	*semptr;	/* Ptr to semaphore table entry	*/
+
+	xdynprio[0].xtqexp = 0;
+	xdynprio[0].xslpret = 0;
+	xdynprio[0].xquantum = QUANTUM;
+
+	for (j = 1; j <= 5; j++) {
+		xdynprio[i].xtqexp = 1 > (i-1) ? 1 : (i-1);
+		xdynprio[i].xslpret = 5 < (i+1) ? 5 : (i+1);
+		xdynprio[i].xquantum = 60 - 10*i;
+	}
 
 	/* Platform Specific Initialization */
 
@@ -241,3 +252,5 @@ int32	delay(int n)
 	DELAY(n);
 	return OK;
 }
+
+

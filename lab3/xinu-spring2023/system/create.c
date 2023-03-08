@@ -26,6 +26,13 @@ pid32	create(
 	uint32		*saddr;		/* Stack address		*/
 
 	mask = disable();
+
+	/* make modifications for DYSCHEDENABLE */
+	prptr->prprio = priority;
+	#if DYSCHEDENABLE
+	prptr->prprio = 3;
+	#endif
+
 	if (ssize < MINSTK)
 		ssize = MINSTK;
 	ssize = (uint32) roundmb(ssize);
@@ -40,7 +47,6 @@ pid32	create(
 
 	/* Initialize process table entry for new process */
 	prptr->prstate = PR_SUSP;	/* Initial state is suspended	*/
-	prptr->prprio = priority;
 	prptr->prstkbase = (char *)saddr;
 	prptr->prstklen = ssize;
 	prptr->prname[PNMLEN-1] = NULLCH;

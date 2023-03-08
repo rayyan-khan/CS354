@@ -8,7 +8,8 @@ process	main(void)
 {
 
 	/* lab 3 test */
-	test_3_1();
+	// test_3_1();
+	test_3_2();
 
 	/* Run the Xinu shell */
 
@@ -36,4 +37,19 @@ void test_3_1() {
 	}
 
 	kprintf("\n3.1 cpuusage result: %d\n", cpuusage(getpid()));
+}
+
+void test_3_2() {
+	// print main process response time, see if its the same as msclkcounter
+	// use sleep() to put things back in the readylist
+
+	kprintf("msclkcounter2: %d response time main: %d\n", msclkcounter2, responsetime(getpid()));
+
+	struct procent * prptr = &proctab[getpid()];
+	
+	kprintf("check prctxswcount 1: %d\n", prptr->prctxswcount);
+	sleep(3);
+	kprintf("check prctxswcount 2: %d\n", prptr->prctxswcount);
+	kprintf("msclkcounter2: %d response time main: %d\n", msclkcounter2, responsetime(getpid()));
+	kprintf("SOMETHING IS WRONG\n");
 }
