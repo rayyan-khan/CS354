@@ -32,6 +32,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		/* Old process will no longer remain current */
 
 		ptold->prstate = PR_READY;
+		ptold->prctxswcount = ptold->prctxswcount + 1;
 		insert(currpid, readylist, ptold->prprio);
 	}
 
@@ -40,15 +41,22 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	currpid = dequeue(readylist);
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
+
+	/* below section for lab 3 3.2 */ 
+	uint32 diff = msclkcounter2 - ptnew->prbeginready;
+	if (diff = 0) {
+		diff = 1;
+	}
+	ptnew->prresptime = diff; 
+
 	preempt = QUANTUM;		/* Reset time slice for process	*/
 
-	
-	// kprintf("before update prcpu: %d currcpu: %d\n", ptold->prcpu, currcpu); // debugging
 	ptold->prcpu = ptold->prcpu + currcpu; // add for lab 3 3.1, update prcpu
-	// kprintf("after update prcpu: %d\n", ptold->prcpu); // debugging
+
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
 	currcpu = 0; // add for lab 3 3.1, reset currcpu
+
 
 	/* Old process returns here when resumed */
 

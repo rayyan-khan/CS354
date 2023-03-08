@@ -451,6 +451,9 @@ extern	status	resched_cntl(int32);
 /* in file intutils.S */
 extern	void	restore(intmask);
 
+/* in file responsetime.c */
+extern syscall  responsetime(pid32);
+
 /* in file resume.c */
 extern	pri16	resume(pid32);
 

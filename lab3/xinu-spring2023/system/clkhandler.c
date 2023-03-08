@@ -13,7 +13,6 @@ void	clkhandler()
 	static	uint32	count1000 = 1000;	/* Count to 1000 ms	*/
 	msclkcounter2++; /* increment msclkcounter2 from clkinit.c for lab 3 3.2 */
 
-
 	/* Decrement the ms counter, and see if a second has passed */
 
 	if((--count1000) <= 0) {

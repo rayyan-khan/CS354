@@ -1,6 +1,6 @@
 /* cpuusage.c - cpuusage */
 
-/* new file for lab 3 3.2 */
+/* new file for lab 3 3.1 */
 #include <xinu.h>
 
 syscall cpuusage(pid32 pid) {
