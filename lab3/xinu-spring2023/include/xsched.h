@@ -4,4 +4,6 @@ struct xsched_tab {
   uint16  xquantum;       // time slice associated with priority level
 };
 
+extern struct xsched_tab xdynprio[];
+
 #define  DYNSCHEDENABLE 1

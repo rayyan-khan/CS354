@@ -48,8 +48,27 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		diff = 1;
 	}
 	ptnew->prresptime = diff; 
+	/* end 3.2 section */
 
 	preempt = QUANTUM;		/* Reset time slice for process	*/
+
+	#if DYSCHEDENABLE
+	/* below section for lab 3 4.2 - check value of preempt to determine CPU-bound or IO-bound */
+	if (preempt == 0) // then it is CPU-bound
+	{
+		// update ptold
+		ptold->prprio = xdynprio[ptold->prprio].xtqexp;
+	}
+	else {
+		ptold->prprio = xdynprio[ptold->prprio].xslpret;
+	}
+
+	/* update time slice - get new time slice value based on priority */
+	preempt = xdynprio[ptnew->prprio].xquantum;
+
+	#endif
+
+	/* end 4.2 section */
 
 	ptold->prcpu = ptold->prcpu + currcpu; // add for lab 3 3.1, update prcpu
 
