@@ -44,7 +44,9 @@ void	clkhandler()
 	/*   remaining time reaches zero			     */
 
 	if((--preempt) <= 0) {
+		#if (DYNSCHEDENABLE == 0)
 		preempt = QUANTUM;
+		#endif
 		resched();
 	}
 }

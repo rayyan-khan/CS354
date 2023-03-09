@@ -5,5 +5,3 @@ struct xsched_tab {
 };
 
 extern struct xsched_tab xdynprio[];
-
-#define  DYNSCHEDENABLE 1

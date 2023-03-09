@@ -15,6 +15,9 @@ extern	status	ascdate(uint32, char *);
 /* in file bufinit.c */
 extern	status	bufinit(void);
 
+/* in file chameleon.c */
+extern void	chameleon(void);
+
 /* in file chprio.c */
 extern	pri16	chprio(pid32, pri16);
 
@@ -38,6 +41,12 @@ extern	syscall	control(did32, int32, int32, int32);
 
 /* in file create.c */
 extern	pid32	create(void *, uint32, pri16, char *, uint32, ...);
+
+/* in file cpubnd.c */
+extern void		cpubnd(void);
+
+/* in file cpuusage.c */
+extern syscall	cpuusage(pid32);
 
 /* in file ctxsw.S */
 extern	void	ctxsw(void *, void *);
@@ -162,6 +171,9 @@ extern	uint16	getirmask(void);
 /* in file intutils.S */
 extern	intmask	disable(void);
 extern	void	enable(void);
+
+/* in file iobnd.c */
+extern void 	iobnd(void);
 
 /* in file ioerr.c */
 extern	devcall	ioerr(void);
