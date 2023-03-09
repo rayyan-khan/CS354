@@ -24,6 +24,17 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
 	ptold = &proctab[currpid];
 
+	/* start 4.2 stuff */
+	#if DYNSCHEDENABLE
+	/* below section for lab 3 4.2 - check value of preempt to determine CPU-bound or IO-bound */
+	if (preempt == 0) // then it is CPU-bound
+	{
+		// update ptold
+		ptold->prprio = xdynprio[ptold->prprio].xtqexp;
+	}
+	#endif
+	/* end 4.2 stuff */
+
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
 		if (ptold->prprio > firstkey(readylist)) {
 			return;
@@ -32,7 +43,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		/* Old process will no longer remain current */
 
 		ptold->prstate = PR_READY;
-		ptold->prctxswcount = ptold->prctxswcount + 1;
+		ptold->prbeginready = msclkcounter2;
 		insert(currpid, readylist, ptold->prprio);
 	}
 
@@ -42,36 +53,26 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
 
-	/* below section for lab 3 3.2 */ 
-	uint32 diff = msclkcounter2 - ptnew->prbeginready;
-	if (diff = 0) {
-		diff = 1;
-	}
-	ptnew->prresptime = diff; 
-	/* end 3.2 section */
-
+	/* start 4.2 section */
 	preempt = QUANTUM;		/* Reset time slice for process	*/
-
-	#if DYSCHEDENABLE
-	/* below section for lab 3 4.2 - check value of preempt to determine CPU-bound or IO-bound */
-	if (preempt == 0) // then it is CPU-bound
-	{
-		// update ptold
-		ptold->prprio = xdynprio[ptold->prprio].xtqexp;
-	}
-	else {
-		ptold->prprio = xdynprio[ptold->prprio].xslpret;
-	}
-
+	#if DYNSCHEDENABLE
 	/* update time slice - get new time slice value based on priority */
 	preempt = xdynprio[ptnew->prprio].xquantum;
 
 	#endif
-
 	/* end 4.2 section */
+
+	/* below section for lab 3 3.2 */ 
+	uint32 diff = msclkcounter2 - ptnew->prbeginready;
+	if (diff == 0) {
+		diff = 1;
+	}
+	ptnew->prresptime = ptnew->prresptime + diff; 
+	/* end 3.2 section */
 
 	ptold->prcpu = ptold->prcpu + currcpu; // add for lab 3 3.1, update prcpu
 
+	ptnew->prctxswcount = ptnew->prctxswcount + 1;
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
 	currcpu = 0; // add for lab 3 3.1, reset currcpu

@@ -65,3 +65,5 @@ extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
 extern volatile uint32 currcpu; /* currcpu variable for lab 3 3.1 */
+#define STOPPINGTIME 	8000
+#define DYNSCHEDENABLE 1

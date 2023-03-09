@@ -46,6 +46,11 @@ syscall	sleepms(
 		return SYSERR;
 	}
 
+	#if DYNSCHEDENABLE
+	struct procent * ptold = &proctab[currpid];
+	ptold->prprio = xdynprio[ptold->prprio].xslpret;
+	#endif
+
 	proctab[currpid].prstate = PR_SLEEP;
 	resched();
 	restore(mask);

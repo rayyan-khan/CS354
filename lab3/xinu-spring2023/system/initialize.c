@@ -166,6 +166,7 @@ static	void	sysinit()
 		xdynprio[j].xtqexp = 1 > (j - 1) ? 1 : (j - 1);
 		xdynprio[j].xslpret = 5 < (j + 1) ? 5 : (j + 1);
 		xdynprio[j].xquantum = 60 - 10*j;
+		// kprintf("INDEX: %d NEW INDEX (cpu bound): %d NEW INDEX (io bound): %d NEW TIME SLICE: %d\n", j, xdynprio[j].xtqexp, xdynprio[j].xslpret, xdynprio[j].xquantum);
 	}
 
 	/* Platform Specific Initialization */

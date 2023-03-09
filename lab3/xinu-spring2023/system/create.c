@@ -27,12 +27,6 @@ pid32	create(
 
 	mask = disable();
 
-	/* make modifications for DYSCHEDENABLE */
-	prptr->prprio = priority;
-	#if DYSCHEDENABLE
-	prptr->prprio = 3;
-	#endif
-
 	if (ssize < MINSTK)
 		ssize = MINSTK;
 	ssize = (uint32) roundmb(ssize);
@@ -44,6 +38,15 @@ pid32	create(
 
 	prcount++;
 	prptr = &proctab[pid];
+
+	/* make modifications for DYNSCHEDENABLE */
+	prptr = &proctab[pid];
+	prptr->prprio = priority;
+	// kprintf("IN CREATE, DYNSCHEDENABLE VALUE: %d PID VALUE: %d\n", DYNSCHEDENABLE, pid);
+	#if DYNSCHEDENABLE
+	prptr->prprio = 3;
+	// kprintf("PRIORITY OF NEW PROCESS: %d\n", prptr->prprio);
+	#endif
 
 	/* Initialize process table entry for new process */
 	prptr->prstate = PR_SUSP;	/* Initial state is suspended	*/
