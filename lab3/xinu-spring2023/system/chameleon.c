@@ -8,7 +8,5 @@ void chameleon(void) {
         sleepms(0);
     }
     int pid = getpid();
-    // struct procent * prptr = &proctab[pid];
-    // kprintf("'CMLN' PID: %d MSCTR: %d CU: %d RT: %d PRIO: %d\n", pid, msclkcounter2, cpuusage(pid), responsetime(pid), prptr->prprio);
     kprintf("'CMLN' PID: %d MSCTR: %d CU: %d RT: %d\n", pid, msclkcounter2, cpuusage(pid), responsetime(pid));
 }

@@ -13,7 +13,7 @@ process	main(void)
 {
 	/* lab 3 test */
 	// test_3_1();
-	 test_3_2();
+	// test_3_2();
 	sleepms(0);
 	sleepms(0);
 
@@ -26,7 +26,7 @@ process	main(void)
 	/* Run the Xinu shell */
 
 	recvclr();
-	// sresume(create(shell, 8192, 50, "shell", 1, CONSOLE));
+	// resume(create(shell, 8192, 50, "shell", 1, CONSOLE));
 
 	/* Wait for shell to exit and recreate it */
 
@@ -53,17 +53,17 @@ void test_3_2() {
 	// print main process response time, see if its the same as msclkcounter
 	// use sleep() to put things back in the readylist
 
-	kprintf("msclkcounter2: %d response time initial: %d\n", msclkcounter2, responsetime(getpid()));
+	pid32 pid1 = create(iobnd, 1024, 5, "test 4.4 a", 0);
+	pid32 pid2 = create(cpubnd, 1024, 5, "test 4.4 a", 0);
 
-	struct procent * prptr = &proctab[getpid()];
+	resume(pid1);
+	resume(pid2);
+
+	struct procent * prptr1 = &proctab[pid1];
+	struct procent * prptr2 = &proctab[pid2];
+	kprintf("PID 1: prresptime: %d ctxswcount: %d response time: %d\n", prptr1->prresptime, prptr1->prctxswcount, responsetime(pid1));
+	kprintf("PID 2: prresptime: %d ctxswcount: %d response time: %d\n", prptr2->prresptime, prptr1->prctxswcount, responsetime(pid2));
 	
-	kprintf("1: prctxswcount: %d prresptime: %d\n", prptr->prctxswcount, prptr->prresptime);
-	int k;
-	for(k = 0; k < 10000; k++) {
-		sleepms(1);
-	}
-	kprintf("2: prctxswcount: %d prresptime: %d\n", prptr->prctxswcount, prptr->prresptime);
-	kprintf("msclkcounter2: %d response time main: %d\n", msclkcounter2, responsetime(getpid()));
 }
 
 void test_4_4a() {
