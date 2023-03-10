@@ -4,12 +4,11 @@
 #include <xinu.h>
 
 void chameleon(void) {
-    int i;
-    int j = 0;
-    for(i = 0; i < 5000000; i++) {
-        j++;
-        sleep(0);
+    while(msclkcounter2 <= STOPPINGTIME) {
+        sleepms(0);
     }
     int pid = getpid();
-    kprintf("'Chameleon' PID: %d msclkcounter2: %d cpuusage: %d response time: %d\n", pid, msclkcounter2, cpuusage(pid), responsetime(pid));
+    // struct procent * prptr = &proctab[pid];
+    // kprintf("'CMLN' PID: %d MSCTR: %d CU: %d RT: %d PRIO: %d\n", pid, msclkcounter2, cpuusage(pid), responsetime(pid), prptr->prprio);
+    kprintf("'CMLN' PID: %d MSCTR: %d CU: %d RT: %d\n", pid, msclkcounter2, cpuusage(pid), responsetime(pid));
 }

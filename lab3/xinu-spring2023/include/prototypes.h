@@ -175,6 +175,9 @@ extern	void	enable(void);
 /* in file iobnd.c */
 extern void 	iobnd(void);
 
+/* in file iobnd9.c */
+extern void iobnd9(void);
+
 /* in file ioerr.c */
 extern	devcall	ioerr(void);
 

@@ -29,6 +29,13 @@ syscall	sleepms(
 {
 	intmask	mask;			/* Saved interrupt mask		*/
 
+	/* added for lab 3 4.2 -- check if IO bound */
+	#if DYNSCHEDENABLE
+	struct procent * ptold = &proctab[currpid];
+	ptold->prprio = xdynprio[ptold->prprio].xslpret;
+	#endif
+	/* end lab 3 4.2 section */
+
 	if (delay < 0) {
 		return SYSERR;
 	}
@@ -45,11 +52,6 @@ syscall	sleepms(
 		restore(mask);
 		return SYSERR;
 	}
-
-	#if DYNSCHEDENABLE
-	struct procent * ptold = &proctab[currpid];
-	ptold->prprio = xdynprio[ptold->prprio].xslpret;
-	#endif
 
 	proctab[currpid].prstate = PR_SLEEP;
 	resched();

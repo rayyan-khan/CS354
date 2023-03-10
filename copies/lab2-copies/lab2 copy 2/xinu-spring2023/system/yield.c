@@ -9,7 +9,6 @@
 syscall	yield(void)
 {
 	intmask	mask;			/* Saved interrupt mask		*/
-
 	mask = disable();
 	resched();
 	restore(mask);

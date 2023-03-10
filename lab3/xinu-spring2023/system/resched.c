@@ -26,12 +26,15 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
 	/* start 4.2 stuff */
 	#if DYNSCHEDENABLE
-	/* below section for lab 3 4.2 - check value of preempt to determine CPU-bound or IO-bound */
+	/* below section for lab 3 4.2 - check value of preempt to determine CPU-bound */
 	if (preempt == 0) // then it is CPU-bound
 	{
 		// update ptold
 		ptold->prprio = xdynprio[ptold->prprio].xtqexp;
 	}
+	// else {
+	// 	ptold->prprio = xdynprio[ptold->prprio].xslpret;
+	// }
 	#endif
 	/* end 4.2 stuff */
 
@@ -73,10 +76,9 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptold->prcpu = ptold->prcpu + currcpu; // add for lab 3 3.1, update prcpu
 
 	ptnew->prctxswcount = ptnew->prctxswcount + 1;
-	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
-
+	
 	currcpu = 0; // add for lab 3 3.1, reset currcpu
-
+	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
 	/* Old process returns here when resumed */
 
