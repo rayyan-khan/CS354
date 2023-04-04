@@ -16,9 +16,10 @@ syscall	kill(
 
 	/************ BEGIN CHANGES FOR LAB 4 **************/
 	prptr = &proctab[pid];
+	struct procent * prparentptr = prptr->prparent;
 
-	if (prptr->prparent->prchildstatus[pid] == 1) {
-		prptr->prparent->prchildstatus[pid] = 3; // update child status
+	if (prparentptr->prchildstatus[pid] == 1) {
+		prparentptr->prchildstatus[pid] = 3; // update child status
 		// check if child has children
 		if(prptr->prchildpid[0] == NULL) {
 			prptr->prstate = PR_FREE; // copied these four lines of code from initialize.c to remove from proctab
@@ -35,10 +36,10 @@ syscall	kill(
 			}
 		}
 	} 
-	else if (prptr->prparent->prchildstatus[pid] == 2) {
-		prptr->prparent->prstate = PR_READY; // set prparent to PR_READY
-		prptr->prparent->prchildstatus[pid] = 4; // update child status
-		ready(prparent); // add parent to readylist
+	else if (prparentptr->prchildstatus[pid] == 2) {
+		prparentptr->prstate = PR_READY; // set prparent to PR_READY
+		prparentptr->prchildstatus[pid] = 4; // update child status
+		ready(prptr->prparent); // add parent to readylist
 	}
 	/****************** END CHANGES FOR LAB 4 ***************/
 
