@@ -7,7 +7,6 @@
 #endif		
 
 /* Process state constants */
-
 #define	PR_FREE		0	/* Process table entry is unused	*/
 #define	PR_CURR		1	/* Process is currently running		*/
 #define	PR_READY	2	/* Process is on ready queue		*/
@@ -16,6 +15,7 @@
 #define	PR_SUSP		5	/* Process is suspended			*/
 #define	PR_WAIT		6	/* Process is on semaphore queue	*/
 #define	PR_RECTIM	7	/* Process is receiving with timeout	*/
+#define PR_CHLDWAIT 8	/* New state for lab 4 -- determines whether parent has made a call to xchildwait() */
 
 /* Miscellaneous process definitions */
 
@@ -52,6 +52,9 @@ struct procent {		/* Entry in the process table		*/
 	umsg32	prmsg;		/* Message sent to this process		*/
 	bool8	prhasmsg;	/* Nonzero iff msg is valid		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
+	uint32	prchildcount; /* number of children a process has */
+	pid32	prchildpid[NPROC]; /* list of children processes */
+	uint16	prchildstatus[NPROC]; /* list of children process statuses */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

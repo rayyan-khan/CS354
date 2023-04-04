@@ -14,6 +14,31 @@ syscall	kill(
 	struct	procent *prptr;		/* Ptr to process's table entry	*/
 	int32	i;			/* Index into descriptors	*/
 
+	/************ BEGIN CHANGES FOR LAB 4 **************/
+	prptr = &proctab[pid];
+
+	if (prptr->prchildstatus[pid] == 1) {
+		prptr->prparent->prchildstatus[pid] = 3; // update child status
+		// check if child has children
+		if(prptr->prchildpid[0] == NULL) {
+			proctab[pid] = NULL;
+		}
+		else { // if it does have children, update parent values to 0
+			int k;
+			for (k = 0; k < NPROC; k++) {
+				pid32 childpid = prptr->prchildpid[k];
+				struct procent * prchildptr = &proctab[childpid];
+				prchildptr->prparent = 0;
+			}
+		}
+	} 
+	else if (prptr->prchildstatus[pid] == 2) {
+		prptr->prparent->prstate = PR_READY; // set prparent to PR_READY
+		prptr->prparent->prchildstatus[pid] = 4; // update child status
+		ready(prparent); // add parent to readylist
+	}
+	/****************** END CHANGES FOR LAB 4 ***************/
+
 	mask = disable();
 	if (isbadpid(pid) || (pid == NULLPROC)
 	    || ((prptr = &proctab[pid])->prstate) == PR_FREE) {
