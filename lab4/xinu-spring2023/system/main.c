@@ -13,8 +13,8 @@ process	main(void)
 
 	/* tests */
 	pid32 parent_pid;
-    parent_pid = create(parent_0, 1024, 20, "Parent process", 0);
-    //parent_pid = create(parent_1, 1024, 20, "Parent process", 0);
+    // parent_pid = create(parent_0, 1024, 20, "Parent process", 0);
+    parent_pid = create(parent_1, 1024, 20, "Parent process", 0);
     resume(parent_pid);
 
 	return OK;
@@ -60,7 +60,7 @@ void parent_0(void) {
     if (result != SYSERR) {
         kprintf("\nParent process unblocked. Child process with PID %d terminated.\n", result);
     } else {
-        kprintf("\nError occurred in blocking mode of xchildwait\n");
+        kprintf("\nError occurred in blocking mode of xchildwait: result is %d\n", result);
     }
 
     kprintf("\nParent process is back\n");

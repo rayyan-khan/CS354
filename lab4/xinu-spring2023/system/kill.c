@@ -18,28 +18,31 @@ syscall	kill(
 	prptr = &proctab[pid];
 	struct procent * prparentptr = &proctab[prptr->prparent];
 
+	if (prptr->prparent != NULLPROC) {
+
+	// check if child has children
+	if(prptr->prchildcount != 0) {// if it does have children, update parent values to 0
+		int k;
+		for (k = 0; k < NPROC; k++) { // loop through children
+			pid32 childpid = prptr->prchildpid[k]; // get PID of k'th child
+			struct procent * prchildptr = &proctab[childpid]; // create pointer to that child
+			prchildptr->prparent = 0;
+		}
+	}
+
 	if (prparentptr->prchildstatus[pid] == 1) {
 		prparentptr->prchildstatus[pid] = 3; // update child status
-		// check if child has children
-		if(prptr->prchildpid[0] == NULL) {
-			prptr->prstate = PR_FREE; // copied these four lines of code from initialize.c to remove from proctab
-			prptr->prname[0] = NULLCH;
-			prptr->prstkbase = NULL;
-			prptr->prprio = 0;
-		}
-		else { // if it does have children, update parent values to 0
-			int k;
-			for (k = 0; k < NPROC; k++) { // loop through children
-				pid32 childpid = prptr->prchildpid[k]; // get PID of k'th child
-				struct procent * prchildptr = &proctab[childpid]; // create pointer to that child
-				prchildptr->prparent = 0;
-			}
-		}
+		prptr->prstate = PR_FREE; // copied these four lines of code from initialize.c to remove from proctab
+		prptr->prname[0] = NULLCH;
+		prptr->prstkbase = NULL;
+		prptr->prprio = 0;
+		resched();
 	} 
-	else if (prparentptr->prchildstatus[pid] == 2) {
+	else if (prparentptr->prchildstatus[pid] == 2 && prptr->prstate == PR_CURR) {
 		prparentptr->prstate = PR_READY; // set prparent to PR_READY
 		prparentptr->prchildstatus[pid] = 4; // update child status
 		ready(prptr->prparent); // add parent to readylist
+	}
 	}
 	/****************** END CHANGES FOR LAB 4 ***************/
 
