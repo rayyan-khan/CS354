@@ -83,6 +83,8 @@ void	nulluser()
 
 	//net_init();
 
+	mymotd();
+
 	/* Create a process to finish startup and start main */
 
 	resume(create((void *)startup, INITSTK, INITPRIO,
@@ -90,8 +92,6 @@ void	nulluser()
 
 	/* Become the Null process (i.e., guarantee that the CPU has	*/
 	/*  something to run when no other process is ready to execute)	*/
-
-	mymotd();
 
 	while (TRUE) {
 		;		/* Do nothing */

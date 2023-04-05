@@ -51,10 +51,10 @@ pid32	create(
 	prptr->prhasmsg = FALSE;
 	prptr->prchildcount = 0; // lab 4: initialize prchildcount to 0
 
-	struct procent * prparentptr = prptr->prparent; // get pointer to prptr's parent
-	prparentptr->prchildcount += 1; // increment parent's child count
+	struct procent * prparentptr = &proctab[prptr->prparent]; // get pointer to prptr's parent
 	prparentptr->prchildpid[prparentptr->prchildcount] = pid; // update parent's prchildpid list
-	prparentptr->prchildstatus[prparentptr->prchildcount] = 1; // initialize status to 1
+	prparentptr->prchildstatus[pid] = 1; // initialize status to 1
+	prparentptr->prchildcount += 1; // increment parent's child count
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 	prptr->prdesc[0] = CONSOLE;

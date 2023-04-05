@@ -16,7 +16,7 @@ syscall	kill(
 
 	/************ BEGIN CHANGES FOR LAB 4 **************/
 	prptr = &proctab[pid];
-	struct procent * prparentptr = prptr->prparent;
+	struct procent * prparentptr = &proctab[prptr->prparent];
 
 	if (prparentptr->prchildstatus[pid] == 1) {
 		prparentptr->prchildstatus[pid] = 3; // update child status

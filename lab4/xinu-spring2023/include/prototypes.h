@@ -610,6 +610,9 @@ extern	void	wakeup(void);
 /* in file write.c */
 extern	syscall	write(did32, char *, uint32);
 
+/* in file xchildwait.c */
+extern syscall xchildwait(uint32, pid32);
+
 /* in file xdone.c */
 extern	void	xdone(void);
 
