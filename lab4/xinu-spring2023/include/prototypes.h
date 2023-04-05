@@ -15,6 +15,9 @@ extern	status	ascdate(uint32, char *);
 /* in file bufinit.c */
 extern	status	bufinit(void);
 
+/* in file cbchildregister.c */
+extern syscall cbchildregister(void (*cbf), (void)); 
+
 /* in file chprio.c */
 extern	pri16	chprio(pid32, pri16);
 
