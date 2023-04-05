@@ -7,5 +7,6 @@
  *------------------------------------------------------------------------
  */
 extern syscall cbchildregister(void (*cbf)(void)) {
-    return 0;
+    struct procent * prptr = &proctab[getpid()]; // get a pointer to the current process
+    prptr->prcallback = cbf;
 }
