@@ -6,8 +6,11 @@ void child_0(void);
 void child_1(void);
 void parent_0(void);
 void parent_1(void);
-int childcb();
+void childcb(void);
+void do_nothing(void);
+int32 debugging_var;
 
+pid32 z;
 
 process	main(void)
 {
@@ -26,12 +29,28 @@ process	main(void)
     }
 
     // Spawn child process and remember child PID in global variable z.
-    z = create(abc, 1024, 20, "child", 0, NULL);
+    z = create(do_nothing, 1024, 20, "child", 0, NULL);
     resume(z);
+
+    if(debugging_var == 1) {
+        kprintf("Did not exit clkdisp\n");
+    }
+    else if(debugging_var == 2) {
+        kprintf("Entered no_callback\n");
+    }
+    else if(debugging_var == 3) {
+        kprintf("Entered callback\n");
+    }
+    else if(debugging_var == NULL) {
+        kprintf("debugging_var is null");
+    }
+    else {
+        kprintf("debugging_var value: %d", debugging_var);
+    }
 
     // Then perform other tasks: does not call childcb() nor xchildwait().
     // Example: infinite loop.
-    while(1);
+    // while(1);
 
     return OK;
     
@@ -123,8 +142,12 @@ void parent_1(void){
 
 }
 
-int childcb() {
+void childcb() {
    int x;
    x = xchildwait(1, z);
    kprintf("Child process %d has terminated.\n", x);
+}
+
+void do_nothing(void) {
+    kprintf("\n");
 }

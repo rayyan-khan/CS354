@@ -1,6 +1,7 @@
 /* kill.c - kill */
 
 #include <xinu.h>
+extern void * callback_glbl;
 
 /*------------------------------------------------------------------------
  *  kill  -  Kill a process and remove it from the system
@@ -45,9 +46,15 @@ syscall	kill(
 		}
 	}
 
-	// set global variable of callback function
-	void * callback_glbl = prptr->prcallback;
-
+	// check if prparentptr has a callback function registered
+	mask = disable();
+	kprintf("pid: %d, parent pid: %d, prparentptr->prcallback: %d", pid, prptr->prparent, prparentptr->prcallback);
+	restore(mask);
+	if(prparentptr->prcallback != NULL) {
+		// set global variable of callback function
+		callback_glbl = prparentptr->prcallback;
+	}
+	
 	/****************** END CHANGES FOR LAB 4 PART 3 ***************/
 
 	mask = disable();

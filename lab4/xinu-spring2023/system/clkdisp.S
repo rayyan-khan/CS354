@@ -8,9 +8,36 @@
 		.text
 		.globl	clkdisp		# Clock interrupt dispatcher
 clkdisp:
-		movl	%esp, %ebp # save location of original ESP
-		subl	$4, %esp # move ESP down by 4
+		movl	$1, debugging_var
+		cmpl	$0, callback_glbl # determine whether we need to handle a callback function
+		je		no_callback
+		cmpl	$0, callback_glbl
+		jne		callback
+
+no_callback:
+		movl	$2, debugging_var
 		pushal			# Save registers
+		cli			# Disable further interrupts
+		movb	$EOI,%al	# Reset interrupt
+		outb	%al,$OCW1_2
+
+		call	clkhandler	# Call high level handler
+
+		sti			# Restore interrupt status
+		popal			# Restore registers
+		iret			# Return from interrupt
+
+callback:
+		movl	$3, debugging_var
+		movl	%esp, %ebp # save location of original ESP
+		subl	$4, %esp   # move ESP down by 4
+		pushal			   # Save registers
+
+		cli			# Disable further interrupts
+		movb	$EOI,%al	# Reset interrupt
+		outb	%al,$OCW1_2
+
+		call	clkhandler	# Call high level handler
 
 		# move down EIP, CS, and EFLAGS by 4 bytes
 		# EIP is currently located where EBP is
@@ -29,12 +56,6 @@ clkdisp:
 		# put CBF into the space
 		movl	callback_glbl, %eax
 		movl	%eax, -4(%ebp)
-
-		cli			# Disable further interrupts
-		movb	$EOI,%al	# Reset interrupt
-		outb	%al,$OCW1_2
-
-		call	clkhandler	# Call high level handler
 
 		sti			# Restore interrupt status
 		popal			# Restore registers
