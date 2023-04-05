@@ -631,3 +631,4 @@ extern	syscall	yield(void);
 		   (((x)<<8) & 0x00ff0000) | (((x)<<24) & 0xff000000))
 
 int32 debugging_var;
+int32 helper_global;

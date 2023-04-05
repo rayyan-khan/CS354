@@ -19,6 +19,17 @@ syscall	kill(
 	prptr = &proctab[pid];
 	struct procent * prparentptr = &proctab[prptr->prparent];
 
+	// check if prparentptr has a callback function registered
+	mask = disable();
+	kprintf("pid: %d, parent pid: %d, prparentptr->prcallback: %d\n", pid, prptr->prparent, prparentptr->prcallback);
+	
+	if(prparentptr->prcallback != NULL) {
+		// set global variable of callback function
+		callback_glbl = prparentptr->prcallback;
+		kprintf("callback_glbl: %d\n", callback_glbl);
+	}
+	restore(mask);
+
 	if (prptr->prparent != NULLPROC) {
 
 		// check if child has children
@@ -44,15 +55,6 @@ syscall	kill(
 			prparentptr->prchildstatus[pid] = 4; // update child status
 			ready(prptr->prparent); // add parent to readylist
 		}
-	}
-
-	// check if prparentptr has a callback function registered
-	mask = disable();
-	kprintf("pid: %d, parent pid: %d, prparentptr->prcallback: %d", pid, prptr->prparent, prparentptr->prcallback);
-	restore(mask);
-	if(prparentptr->prcallback != NULL) {
-		// set global variable of callback function
-		callback_glbl = prparentptr->prcallback;
 	}
 	
 	/****************** END CHANGES FOR LAB 4 PART 3 ***************/

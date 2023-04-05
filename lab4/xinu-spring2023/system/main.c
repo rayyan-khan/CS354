@@ -32,25 +32,25 @@ process	main(void)
     z = create(do_nothing, 1024, 20, "child", 0, NULL);
     resume(z);
 
-    if(debugging_var == 1) {
-        kprintf("Did not exit clkdisp\n");
-    }
-    else if(debugging_var == 2) {
-        kprintf("Entered no_callback\n");
-    }
-    else if(debugging_var == 3) {
-        kprintf("Entered callback\n");
-    }
-    else if(debugging_var == NULL) {
-        kprintf("debugging_var is null");
-    }
-    else {
-        kprintf("debugging_var value: %d", debugging_var);
-    }
+    // if(debugging_var == 1) {
+    //     kprintf("\n1?: Did not exit clkdisp\n");
+    // }
+    // else if(debugging_var == 2) {
+    //     kprintf("\n2?: Entered no_callback\n");
+    // }
+    // else if(debugging_var == 3) {
+    //     kprintf("\n3?: Entered callback\n");
+    // }
+    // else if(debugging_var == NULL) {
+    //     kprintf("\null: ndebugging_var is null");
+    // }
+    // else {
+    //     kprintf("\ndebugging_var value: %d", debugging_var);
+    // }
 
     // Then perform other tasks: does not call childcb() nor xchildwait().
     // Example: infinite loop.
-    // while(1);
+    while(1);
 
     return OK;
     
@@ -149,5 +149,10 @@ void childcb() {
 }
 
 void do_nothing(void) {
-    kprintf("\n");
+    int k;
+    int i = 0;
+    for(k = 0; k < 10; k++) {
+        i++;
+    }
+    kprintf("in do_nothing\n");
 }
