@@ -55,6 +55,7 @@ struct procent {		/* Entry in the process table		*/
 	uint32	prchildcount; /* number of children a process has */
 	pid32	prchildpid[NPROC]; /* list of children processes */
 	uint16	prchildstatus[NPROC]; /* list of children process statuses */
+	void	*callback; /* function pointer for the process's children's callback function */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
@@ -63,3 +64,4 @@ struct procent {		/* Entry in the process table		*/
 extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
+void 	*callback_glbl; 	/* Global variable representing the callback function of the current process */

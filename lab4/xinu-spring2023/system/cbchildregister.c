@@ -6,6 +6,6 @@
  *  cbchildregister - register a callback function for a new processz
  *------------------------------------------------------------------------
  */
-extern syscall cbchildregister(void (*cbf), (void)) {
+extern syscall cbchildregister(void (*cbf)(void)) {
     return 0;
 }
