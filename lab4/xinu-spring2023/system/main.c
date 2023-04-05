@@ -6,18 +6,34 @@ void child_0(void);
 void child_1(void);
 void parent_0(void);
 void parent_1(void);
+int childcb();
+
 
 process	main(void)
 {
 	/* Run the Xinu shell */
 
-	/* tests */
-	pid32 parent_pid;
-    // parent_pid = create(parent_0, 1024, 20, "Parent process", 0);
-    parent_pid = create(parent_1, 1024, 20, "Parent process", 0);
-    resume(parent_pid);
+	// /* tests */
+	// pid32 parent_pid;
+    // // parent_pid = create(parent_0, 1024, 20, "Parent process", 0);
+    // parent_pid = create(parent_1, 1024, 20, "Parent process", 0);
+    // resume(parent_pid);
 
-	return OK;
+    // App initialization.
+    if (cbchildregister(&childcb) == SYSERR) {
+       kprintf("Callback function registration failed.\n");
+       exit();
+    }
+
+    // Spawn child process and remember child PID in global variable z.
+    z = create(abc, 1024, 20, "child", 0, NULL);
+    resume(z);
+
+    // Then perform other tasks: does not call childcb() nor xchildwait().
+    // Example: infinite loop.
+    while(1);
+
+    return OK;
     
 }
 
@@ -105,4 +121,10 @@ void parent_1(void){
 
     kprintf("\nParent process (PID: %d) completed.\n", getpid()); 
 
+}
+
+int childcb() {
+   int x;
+   x = xchildwait(1, z);
+   kprintf("Child process %d has terminated.\n", x);
 }

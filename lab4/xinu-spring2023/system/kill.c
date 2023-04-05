@@ -46,13 +46,13 @@ syscall	kill(
 	}
 
 	// set global variable of callback function
-	void * callback_glbl = prptr->callback_glbl;
-	
+	void * callback_glbl = prptr->prcallback;
+
 	/****************** END CHANGES FOR LAB 4 PART 3 ***************/
 
 	mask = disable();
 	if (isbadpid(pid) || (pid == NULLPROC)
-	    || ((prptr->prstate) == PR_FREE) { // modified due to initializing prptr above
+	    || ((prptr->prstate) == PR_FREE)) { // modified due to initializing prptr above
 		restore(mask);
 		return SYSERR;
 	}
