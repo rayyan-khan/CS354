@@ -4,6 +4,7 @@
  * clkdisp  -  Interrupt dispatcher for clock interrupts (x86 version)
  *------------------------------------------------------------------------
  */
+
 #include <icu.s>
 		.text
 		.globl	clkdisp		# Clock interrupt dispatcher
@@ -58,9 +59,9 @@ execute_callback:
 		movl	callback_glbl, %eax
 		movl	%eax, -4(%ebp)
 		movl	helper_global, %ebp
+		movl	$0, callback_glbl
 
 		sti			# Restore interrupt status
 		popal			# Restore registers
-		
-		movl	$0, callback_glbl
+	
 		iret			# Return from interrupt

@@ -6,6 +6,8 @@
  *  cbchildregister - register a callback function for a new processz
  *------------------------------------------------------------------------
  */
+
+void 	*callback_glbl; 
 syscall cbchildregister(void (*cbf)(void)) {
     struct procent * prptr = &proctab[getpid()]; // get a pointer to the current process
 

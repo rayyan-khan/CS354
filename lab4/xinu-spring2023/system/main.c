@@ -9,6 +9,7 @@ void parent_1(void);
 void childcb(void);
 void do_nothing(void);
 int32 debugging_var;
+extern void * callback_glbl;
 
 pid32 z;
 
@@ -146,6 +147,7 @@ void childcb() {
    int x;
    x = xchildwait(1, z);
    kprintf("Child process %d has terminated.\n", x);
+   //kprintf("Set callback_glbl back to 0\n");
 }
 
 void do_nothing(void) {
