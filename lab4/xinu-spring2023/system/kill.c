@@ -35,7 +35,7 @@ syscall	kill(
 
 		if (prparentptr->prchildstatus[pid] == 1) {
 			//#ifdef XINUDEBUG
-			kprintf("PID: %d\n", pid);
+			kprintf("PID %d\n", pid);
 			//#endif
 			prparentptr->prchildstatus[pid] = 3; // update child status
 		} 

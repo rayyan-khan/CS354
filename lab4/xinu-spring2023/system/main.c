@@ -70,7 +70,7 @@ void childcb() {
 void do_nothing(void) {
     int k;
     int i = 0;
-    for(k = 0; k < 10; k++) {
+    for(k = 0; k < 15; k++) {
         i++;
     }
     #ifdef XINUDEBUG
