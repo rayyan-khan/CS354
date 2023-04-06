@@ -30,36 +30,37 @@ no_callback:
 
 execute_callback:
 		movl	$3, debugging_var
-		movl	%esp, esp_global
-
-		addl	$4, %esp
-		pushal	# save registers
-
-		movl	(esp_global), %eax # move EIP value into eip_global
-		movl	%eax, eip_global
-
-		# move down CS and EFLAGS
-		movl	(%esp), %eax # put CS in EAX
-		movl	%eax, (%esp) # put CS at address of ESP (where EIP used to be)
-		movl	8(%esp), %eax  # put EFLAGS in EAX
-		movl	%eax, 4(%esp)  # put EFLAGS at address of ESP+4
-
-		# put EIP above EFLAGS
-		movl	(eip_global), %eax		# move EIP value into EAX
-		movl	%eax, esp_global+8		# move EIP into the address of esp_global+8
-
-		# put CBF below CS
-		movl	(callback_glbl), %eax	# move callback value into EAX
-		movl	%eax, esp_global-4	# the address to put CBF would be (esp_global - 4) since CS is at ESP
-
-		# Code from original clkdisp
+		subl	$4, %esp
+		pushal		# Save registers
 		cli			# Disable further interrupts
 		movb	$EOI,%al	# Reset interrupt
 		outb	%al,$OCW1_2
 
 		call	clkhandler	# Call high level handler
 
+		movl	36(%esp), %eax			# move EIP into eip_global
+		movl	%eax, eip_global		#
+		movl	40(%esp), %eax	        # move CS into the spot previously occupied by EIP
+		movl	%eax, 36(%esp)			#
+		movl	44(%esp), %eax			# move EFLAGS into spot previously occupied by CS
+		movl	%eax, 40(%esp)			#
+		movl	eip_global, %eax		# move EIP into the spot previously held by EFLAGS before it was moved
+		movl	%eax, 44(%esp)			#
+		movl	callback_glbl, %eax		# move callback_glbl into the spot below CS
+		movl	%eax, 32(%esp)			#
+		movl	$0, callback_glbl		# reset callback_glbl
+
+		# addl	$36, %esp				# move ESP to EIP location
+		# popl	%eax					# pop EIP into EAX
+		# popl	%ebx 					# pop CS into EBX
+		# popl	%ecx 					# pop EFLAGS into ECX
+		# pushl   %eax					# push EIP where EFLAGS used to be
+		# pushl	%ecx					# push EFLAGS where CS used to be
+		# pushl	%ebx					# push CS where EIP used to be
+		# movl	callback_glbl, %eax		# put callback_glbl in EAX
+		# pushl	%eax
+		# subl	$32, %esp
+
 		sti			# Restore interrupt status
 		popal			# Restore registers
-		movl	$0, callback_glbl	# reset value of callback_glbl
-		iret			# Return from interrupt
+		iret	
