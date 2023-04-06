@@ -1,0 +1,20 @@
+Part 3 writeup:
+create() changes:
+Initialized the new process childcount to 0. 
+Update the new process’s parent’s prchildcount, prprchildstatus, and prchildpid fields. 
+
+kill() changes:
+Check if the process’s parent is the null process. 
+If it isn’t, check if the process has children. 
+If it does, update all the children’s prparent field to 0 to have them “adopted” by the null process. 
+If the process’s status is 1, update the status to 3. 
+If the process’s status is 2, set the parent process to PR_READY, update the process status to 4, 
+and add the parent to the readylist. 
+
+xchildwait():
+Get pointers to the process with the passed in PID and it’s parent.
+If the function is a blocking call, return SYSERR if the PID is bad. 
+Otherwise, set the parent state to PR_CHLDWAIT, set the process status to 2, 
+initiate a context switch with resched(), and return the PID. 
+If it’s not a blocking call, check if the process status is 3, then set it to 4 and return PID. 
+If the value that indicates whether or not there is a blocking call is not 1 or 0, return SYSERR.

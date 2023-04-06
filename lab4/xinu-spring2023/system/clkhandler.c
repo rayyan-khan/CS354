@@ -1,7 +1,6 @@
 /* clkhandler.c - clkhandler */
 
 #include <xinu.h>
-extern void * callback_glbl;
 
 /*------------------------------------------------------------------------
  * clkhandler - high level clock interrupt handler

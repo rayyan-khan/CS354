@@ -9,14 +9,12 @@
 		.text
 		.globl	clkdisp		# Clock interrupt dispatcher
 clkdisp:
-		movl	$1, debugging_var
 		cmpl	$0, callback_glbl # determine whether we need to handle a callback function
 		je		no_callback
 		cmpl	$0, callback_glbl
-		jne		execute_callback
+		jne		execute_callback		
 
 no_callback:
-		movl	$2, debugging_var
 		pushal			# Save registers
 		cli			# Disable further interrupts
 		movb	$EOI,%al	# Reset interrupt
@@ -29,7 +27,6 @@ no_callback:
 		iret			# Return from interrupt
 
 execute_callback:
-		movl	$3, debugging_var
 		subl	$4, %esp
 		# pushl	%eax
 		pushal		# Save registers
