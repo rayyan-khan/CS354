@@ -630,5 +630,7 @@ extern	syscall	yield(void);
 #define	ntohl(x)  ((((x)>>24) & 0x000000ff) | (((x)>> 8) & 0x0000ff00) | \
 		   (((x)<<8) & 0x00ff0000) | (((x)<<24) & 0xff000000))
 
-int32 debugging_var;
-int32 eip_global;
+int * debugging_var;
+int * eip_global;
+
+//#define XINUDEBUG 1

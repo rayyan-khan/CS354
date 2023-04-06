@@ -28,14 +28,12 @@ syscall	xchildwait(uint32 block, pid32 pid)
         if (prparentptr->prchildstatus[pid] == 3) {
             // kprintf("IN LINE 29\n");
             prparentptr->prchildstatus[pid] = 4; // set child status to 2
-            
-            if (pid > 0) {
-                // kprintf("HITS CASE 2\n");
-                return pid;
-            }
+            return pid;
         }
     }
-
+    #ifdef XINUDEBUG
+    kprintf("prchildstatus: %d\n", prparentptr->prchildstatus[pid]);
     // kprintf("HITS CASE 3\n");
+    #endif
     return  SYSERR;
 }

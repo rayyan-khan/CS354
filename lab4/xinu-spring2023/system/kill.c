@@ -19,16 +19,7 @@ syscall	kill(
 	prptr = &proctab[pid];
 	struct procent * prparentptr = &proctab[prptr->prparent];
 
-	// check if prparentptr has a callback function registered
 	mask = disable();
-	kprintf("pid: %d, parent pid: %d, prparentptr->prcallback: %d\n", pid, prptr->prparent, prparentptr->prcallback);
-	
-	if(prparentptr->prcallback != NULL) {
-		// set global variable of callback function
-		callback_glbl = prparentptr->prcallback;
-		kprintf("callback_glbl: %d\n", callback_glbl);
-	}
-	restore(mask);
 
 	if (prptr->prparent != NULLPROC) {
 
@@ -43,12 +34,10 @@ syscall	kill(
 		}
 
 		if (prparentptr->prchildstatus[pid] == 1) {
+			//#ifdef XINUDEBUG
+			kprintf("PID: %d\n", pid);
+			//#endif
 			prparentptr->prchildstatus[pid] = 3; // update child status
-			prptr->prstate = PR_FREE; // copied these four lines of code from initialize.c to remove from proctab
-			prptr->prname[0] = NULLCH;
-			prptr->prstkbase = NULL;
-			prptr->prprio = 0;
-			resched();
 		} 
 		else if (prparentptr->prchildstatus[pid] == 2 && prptr->prstate == PR_CURR) {
 			prparentptr->prstate = PR_READY; // set prparent to PR_READY
@@ -56,10 +45,22 @@ syscall	kill(
 			ready(prptr->prparent); // add parent to readylist
 		}
 	}
+
+	// check if prparentptr has a callback function registered
+	#ifdef XINUDEBUG
+	kprintf("pid: %d, parent pid: %d, prparentptr->prcallback: %d\n", pid, prptr->prparent, prparentptr->prcallback);
+	#endif
+	
+	if(prparentptr->prcallback != NULL) {
+		// set global variable of callback function
+		callback_glbl = prparentptr->prcallback;
+		#ifdef XINUDEBUG
+		kprintf("callback_glbl: %d\n", callback_glbl);
+		#endif
+	}
 	
 	/****************** END CHANGES FOR LAB 4 PART 3 ***************/
-
-	mask = disable();
+	
 	if (isbadpid(pid) || (pid == NULLPROC)
 	    || ((prptr->prstate) == PR_FREE)) { // modified due to initializing prptr above
 		restore(mask);

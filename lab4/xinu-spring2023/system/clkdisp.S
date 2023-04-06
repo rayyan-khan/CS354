@@ -31,6 +31,7 @@ no_callback:
 execute_callback:
 		movl	$3, debugging_var
 		subl	$4, %esp
+		# pushl	%eax
 		pushal		# Save registers
 		cli			# Disable further interrupts
 		movb	$EOI,%al	# Reset interrupt
@@ -49,17 +50,6 @@ execute_callback:
 		movl	callback_glbl, %eax		# move callback_glbl into the spot below CS
 		movl	%eax, 32(%esp)			#
 		movl	$0, callback_glbl		# reset callback_glbl
-
-		# addl	$36, %esp				# move ESP to EIP location
-		# popl	%eax					# pop EIP into EAX
-		# popl	%ebx 					# pop CS into EBX
-		# popl	%ecx 					# pop EFLAGS into ECX
-		# pushl   %eax					# push EIP where EFLAGS used to be
-		# pushl	%ecx					# push EFLAGS where CS used to be
-		# pushl	%ebx					# push CS where EIP used to be
-		# movl	callback_glbl, %eax		# put callback_glbl in EAX
-		# pushl	%eax
-		# subl	$32, %esp
 
 		sti			# Restore interrupt status
 		popal			# Restore registers
