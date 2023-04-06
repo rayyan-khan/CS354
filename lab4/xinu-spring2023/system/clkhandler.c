@@ -10,7 +10,6 @@ extern void * callback_glbl;
 void	clkhandler()
 {
 	static	uint32	count1000 = 1000;	/* Count to 1000 ms	*/
-	callback_glbl = 0; // reset value of callback_glbl
 
 	/* Decrement the ms counter, and see if a second has passed */
 

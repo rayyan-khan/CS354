@@ -632,3 +632,5 @@ extern	syscall	yield(void);
 
 int32 debugging_var;
 int32 helper_global;
+int32 eip_global;
+int32 esp_global;
