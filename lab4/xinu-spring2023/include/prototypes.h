@@ -16,7 +16,10 @@ extern	status	ascdate(uint32, char *);
 extern	status	bufinit(void);
 
 /* in file cbchildregister.c */
-extern syscall cbchildregister(void (*cbf)(void)); 
+extern syscall cbchildregister(void (*cbf)(void));
+
+/* in file childcb.c */
+extern void childcb(void);
 
 /* in file chprio.c */
 extern	pri16	chprio(pid32, pri16);
@@ -305,6 +308,9 @@ extern	int32	namlen(char *, int32);
 
 /* in file mymotd.c */
 void mymotd(void);
+
+/* in file mynonreentrant.c */
+void mynonreentrant(void);
 
 /* in file naminit.c */
 extern	status	naminit(void);
