@@ -143,6 +143,16 @@ char *inames[] = {
 	"coprocessor error"
 };
 
+assemblydebug1() {
+	kprintf("Arrived at clkdisp.S in execute_callback\n");
+}
+assemblydebug2() {
+	kprintf("");
+}
+assemblydebug3() {
+	kprintf("Made it here...\n");
+}
+
 /*------------------------------------------------------------------------
  * trap  -  print debugging info when a trap occurrs
  *------------------------------------------------------------------------

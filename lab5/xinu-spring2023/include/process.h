@@ -52,6 +52,11 @@ struct procent {		/* Entry in the process table		*/
 	umsg32	prmsg;		/* Message sent to this process		*/
 	bool8	prhasmsg;	/* Nonzero iff msg is valid		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
+	uint32  prcpu; /* lab 3 3.1 variable */
+	void	*prcallback; /* function pointer for the process's children's callback function */
+	uint32  prcputhr; /* lab 5 variable */
+	uint32	prwallxthr; /* lab 5 variable */
+	void	*prwallxcallback; /* lab 5 variable */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
@@ -60,3 +65,11 @@ struct procent {		/* Entry in the process table		*/
 extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
+extern volatile uint32 currcpu; /* currcpu variable for lab 3 3.1 */
+#define STOPPINGTIME 	8000
+
+void 	*callback_glbl; // callback function global variable
+void	*wallx_glbl;
+
+extern uint32 use_callback;
+extern uint32 use_wallx;

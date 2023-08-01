@@ -15,6 +15,9 @@ extern	status	ascdate(uint32, char *);
 /* in file bufinit.c */
 extern	status	bufinit(void);
 
+/* in file cbcpuxregister.c */
+syscall cbcpuxregister(void (* cbf) (void), uint32 cputhr);
+
 /* in file chprio.c */
 extern	pri16	chprio(pid32, pri16);
 
@@ -38,6 +41,9 @@ extern	syscall	control(did32, int32, int32, int32);
 
 /* in file create.c */
 extern	pid32	create(void *, uint32, pri16, char *, uint32, ...);
+
+/* in file cpuusage.c */
+extern syscall	cpuusage(pid32);
 
 /* in file ctxsw.S */
 extern	void	ctxsw(void *, void *);
@@ -613,6 +619,20 @@ extern	void	xdone(void);
 /* in file yield.c */
 extern	syscall	yield(void);
 
+/* in file mymotd.c */
+void mymotd(void);
+
+/* in file xdetour.S */
+void	xdetour(void);
+
+void 	assemblydebug1(void);
+void	assemblydebug2(void);
+void 	assemblydebug3(void);
+
+/* in file cbwallxregister.c */
+syscall cbwallxregister(void (* cbf) (void), uint32 cputhr);
+
+
 /* NETWORK BYTE ORDER CONVERSION NOT NEEDED ON A BIG-ENDIAN COMPUTER */
 #define	htons(x)  ((0xff & ((x)>>8)) | ((0xff & (x)) << 8))
 #define	htonl(x)  ((((x)>>24) & 0x000000ff) | (((x)>> 8) & 0x0000ff00) | \
@@ -620,3 +640,5 @@ extern	syscall	yield(void);
 #define	ntohs(x)  ((0xff & ((x)>>8)) | ( (0xff & (x)) << 8))
 #define	ntohl(x)  ((((x)>>24) & 0x000000ff) | (((x)>> 8) & 0x0000ff00) | \
 		   (((x)<<8) & 0x00ff0000) | (((x)<<24) & 0xff000000))
+
+int * eip_global;

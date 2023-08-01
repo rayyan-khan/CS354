@@ -1,7 +1,6 @@
 /* resched.c - resched, resched_cntl */
 
 #include <xinu.h>
-
 struct	defer	Defer;
 
 /*------------------------------------------------------------------------
@@ -40,6 +39,10 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	currpid = dequeue(readylist);
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
+
+	ptold->prcpu = ptold->prcpu + currcpu; // add for lab 3 3.1, update prcpu
+	currcpu = 0; // add for lab 3 3.1, reset currcpu
+
 	preempt = QUANTUM;		/* Reset time slice for process	*/
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
